@@ -1,0 +1,130 @@
+﻿@model IEnumerable<Assesment2.Models.ItemManagement>
+    <form action="/ItemManagements/index">
+        <input type="text" name="temp" />
+        <input type="submit" value="Search" />
+    </form>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategorieId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CostPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SalePrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainColor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategorieId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CostPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalePrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainImage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MainColor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @if (Context.Session.GetString("role") == "Admin")
+                    {
+                        <a href="/ItemManagement/Edit?id=@item.Id" class="btn btn-primary"><i class="fa fa-pencil"></i>Edit</a>
+                        <a href="#" data-id="@item.Id" class="btn btn-danger delete"><i class="fa fa-bin"></i>Delete</a>
+                        <a href="/ItemManagement/Details?id=@item.Id" class="btn btn-warning"><i class="fa fa-eye"></i>Detail</a>
+                    }
+                    else
+                    {
+                        <a href="/ItemManagement/Details?id=@item.Id" class="btn btn-warning"><i class="fa fa-eye"></i>Detail</a>
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+
+    <script>
+        $(function () {
+
+            $('.delete').click(function () {
+
+                var DeleteButton = $(this);
+                var Ajex_id = DeleteButton.data("id");
+                DeleteButton.text("Please Wait ....");
+                DeleteButton.removeClass("btn-danger");
+                DeleteButton.addClass("btn-success");
+                $.ajax({
+                    url: '/ItemManagements/Delete',
+                    type: 'Post',
+                    data: {
+                        id: Ajex_id
+                    },
+                    success: function (response) {
+                        if (response == "1") {
+                            //alert("Data delted");
+                            DeleteButton.parent().parent().fadeOut(5000);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

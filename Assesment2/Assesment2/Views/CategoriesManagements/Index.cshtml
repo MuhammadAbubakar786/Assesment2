@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Assesment2.Models.CategoriesManagement>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<form action="/CategoriesManagements/index">
+    <input type="text" name="temp" />
+    <input type="submit" value="Search" />
+</form>
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Picture)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Picture)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                @if (Context.Session.GetString("role") == "Admin")
+                {
+                    <a href="/CategoriesManagements/Edit?id=@item.Id" class="btn btn-primary"><i class="fa fa-pencil"></i>Edit</a>
+                    <a href="#" data-id="@item.Id" class="btn btn-danger delete"><i class="fa fa-bin"></i>Delete</a>
+                    <a href="/CategoriesManagements/Details?id=@item.Id" class="btn btn-warning"><i class="fa fa-eye"></i>Detail</a>
+                }
+                else
+                {
+                    <a href="/CategoriesManagements/Details?id=@item.Id" class="btn btn-warning"><i class="fa fa-eye"></i>Detail</a>
+                }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section Scripts{
+
+    <script>
+        $(function () {
+
+            $('.delete').click(function () {
+
+                var DeleteButton = $(this);
+                var Ajex_id = DeleteButton.data("id");
+                DeleteButton.text("Please Wait ....");
+                DeleteButton.removeClass("btn-danger");
+                DeleteButton.addClass("btn-success");
+                $.ajax({
+                    url: '/CategoriesManagements/Delete',
+                    type: 'Post',
+                    data: {
+                        id: Ajex_id
+                    },
+                    success: function (response) {
+                        if (response == "1") {
+                            //alert("Data delted");
+                            DeleteButton.parent().parent().fadeOut(5000);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}
