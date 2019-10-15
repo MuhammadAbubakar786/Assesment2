@@ -14,7 +14,13 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <select class="form-control" asp-for="Name">
+                    <option value="Mobile">Mobile</option>
+                    <option value="Tv">Tv</option>
+                    <option value="Ac">Ac</option>
+                    <option value="Oven">Oven</option>
+                    <option value="Laptop">Laptop</option>
+                </select>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
