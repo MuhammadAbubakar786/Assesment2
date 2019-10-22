@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "TwoStepVerification";
+}
+
+<h1>TwoStepVerification</h1>
+<div class="col-md-4">
+    <form asp-action="TwoStepVerification">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <input type="text" class="form-control" name="code" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Send Email" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+
