@@ -35,10 +35,10 @@ namespace Assesment2.Controllers
         {
             return View();
         }
-        public IActionResult ForgetPassword(string email)
+        public IActionResult ForgetPassword(int id)
         {
             
-            var temp = _context.UsersManagement.Find(email);
+            var temp = _context.UsersManagement.Find(id);
             
             if(temp != null)
             {
@@ -274,6 +274,7 @@ namespace Assesment2.Controllers
             return View();
         }
         [HttpPost]
+
         public IActionResult TwoStepVerification(string code)
         {
             if(code != null)
