@@ -91,6 +91,7 @@ namespace Assesment2.Models
                 entity.Property(e => e.Status).HasMaxLength(50);
 
                 entity.Property(e => e.UserName).HasMaxLength(50);
+                entity.Property(e => e.PhoneNumber).HasMaxLength(50);
             });
 
             OnModelCreatingPartial(modelBuilder);

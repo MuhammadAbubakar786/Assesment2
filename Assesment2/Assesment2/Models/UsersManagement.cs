@@ -20,5 +20,6 @@ namespace Assesment2.Models
         public string ProfilePicture { get; set; }
         [Required(ErrorMessage = "Please Enter Date")]
         public string RegisteredData { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

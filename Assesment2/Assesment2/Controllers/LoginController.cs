@@ -25,7 +25,8 @@ namespace Assesment2.Controllers
         // GET: Login
 
         [HttpGet]
-        public IActionResult Login()
+ 
+       public IActionResult Login()
         {
 
             return View();
@@ -35,10 +36,11 @@ namespace Assesment2.Controllers
         {
             return View();
         }
-        public IActionResult ForgetPassword(int id)
+        [HttpPost]
+        public IActionResult ForgetPassword(string email)
         {
             
-            var temp = _context.UsersManagement.Find(id);
+            var temp = _context.UsersManagement.Find(email);
             
             if(temp != null)
             {
@@ -74,25 +76,31 @@ namespace Assesment2.Controllers
             var data = _context.UsersManagement.Where(temp => temp.UserName == users.UserName && temp.Password == users.Password && temp.Email == users.Email).FirstOrDefault();
             if(data != null)
             {
+                string username = "923117752858";
+                string password = "6498";
+                string Masking = "TwoStep";
+                string toNumber = users.PhoneNumber;
+                string code = new System.Random().Next(1000, 9999).ToString();
+                HttpContext.Session.SetString("verifycode", code);
+                sendMessage(username, password, Masking, toNumber, code);
+
                 HttpContext.Session.SetString("Username", users.UserName);
                 HttpContext.Session.SetString("role", data.Role);
 
-                string code = new System.Random().Next(1000, 9999).ToString();
-                HttpContext.Session.SetString("verifycode", code);
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.To.Add("mianabubakar131998@gmail.com");
-                mailMessage.From = new MailAddress(users.Email);
-                mailMessage.Subject = "VerificationCode";
-                mailMessage.IsBodyHtml = true;
-                mailMessage.Body = string.Format("Hi <b>" + users.UserName + "</b>,<br><br>Your Verification Code is:" + code + "<br><br><br>Regards,<br>Theta Team");
+                //MailMessage mailMessage = new MailMessage();
+                //mailMessage.To.Add("mianabubakar131998@gmail.com");
+                //mailMessage.From = new MailAddress(users.Email);
+                //mailMessage.Subject = "VerificationCode";
+                //mailMessage.IsBodyHtml = true;
+                //mailMessage.Body = string.Format("Hi <b>" + users.UserName + "</b>,<br><br>Your Verification Code is:" + code + "<br><br><br>Regards,<br>Theta Team");
 
 
-                SmtpClient smtpClient = new SmtpClient();
-                smtpClient.Host = "smtp.gmail.com";
-                smtpClient.Port = 587;
-                smtpClient.Credentials = new NetworkCredential("mianabubakar131998@gmail.com", "16009065048");
-                smtpClient.EnableSsl = true;
-                smtpClient.Send(mailMessage);
+                //SmtpClient smtpClient = new SmtpClient();
+                //smtpClient.Host = "smtp.gmail.com";
+                //smtpClient.Port = 587;
+                //smtpClient.Credentials = new NetworkCredential("mianabubakar131998@gmail.com", "16009065048");
+                //smtpClient.EnableSsl = true;
+                //smtpClient.Send(mailMessage);
 
                 return RedirectToAction(nameof(TwoStepVerification));
             }
@@ -291,6 +299,30 @@ namespace Assesment2.Controllers
             }
 
             return View();
+        }
+        /// <summary>
+        /// Send Message Using sendpk.com Api
+        /// </summary>
+        public void sendMessage(string username,string password,string Masking,string toNumber,string MessageText)
+        {
+            String URI = "https://Sendpk.com" +
+            "/api/sms.php?" +
+            "username=" + username +
+            "&password=" + password +
+            "&sender=" + Masking +
+            "&mobile=" + toNumber +
+            "&message=" + Uri.UnescapeDataString(MessageText);
+            try {
+                WebClient web = new WebClient();
+                
+                string ResponseFromSMSAPI = web.DownloadString(URI);
+            }
+            catch(Exception ex)
+            {
+                string x = ex.ToString();
+            }
+
+
         }
     }
 }
